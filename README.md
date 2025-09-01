@@ -2,8 +2,6 @@
 
 **s2a** is a simple Bash script that lets you quickly send images from your PC to an Android device or emulator. It works with single images or entire directories and automatically triggers a media scan on the device so images appear immediately.
 
----
-
 ## Features
 
 - Push a single image or multiple images from a folder  
@@ -11,15 +9,11 @@
 - Works with both physical devices and emulators via `adb`  
 - Robust handling of spaces in filenames, empty directories, and common errors  
 
----
-
 ## Requirements
 
 - **Bash** (Linux, macOS, or WSL on Windows)  
 - **ADB (Android Debug Bridge)** installed and in your `PATH`  
 - Android device or emulator connected  
-
----
 
 ## Installation
 
@@ -62,8 +56,6 @@ s2a /path/to/images_directory
 
 - Images are sent to `/sdcard/Pictures/` on your Android device  
 - The script automatically triggers a media scan so the images appear in the gallery immediately  
-
----
 
 ## Example
 
