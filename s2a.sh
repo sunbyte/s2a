@@ -1,32 +1,20 @@
 #!/bin/bash
-#
-# Description:
-#   A helper script for Android development that pushes an image file
-#   from your Linux machine into the running Android emulator or device,
-#   and then triggers a media scan so the image appears in the Gallery app.
-#
-# Requirements:
-#   1. adb (Android Debug Bridge) must be installed and available in PATH
-#   2. Android emulator or physical device must be running and detected by adb
-#
-# Usage:
-#   s2a /path/to/image
+set -euo pipefail
 
-if [ -z "$1" ]; then
-  echo "Usage: $(basename "$0") /path/to/image"
+# Usage info
+usage() {
+  echo "Usage: $(basename "$0") /path/to/image_or_directory"
+  exit 1
+}
+
+# Validate input
+[[ $# -eq 0 ]] && usage
+INPUT_PATH="$1"
+
+if [[ ! -e "$INPUT_PATH" ]]; then
+  echo "File or directory does not exist: $INPUT_PATH"
   exit 1
 fi
-
-IMAGE_PATH="$1"
-
-# Check if file exists
-if [ ! -f "$IMAGE_PATH" ]; then
-  echo "File does not exist: $IMAGE_PATH"
-  exit 1
-fi
-
-BASENAME=$(basename "$IMAGE_PATH")
-DEST="/sdcard/Pictures/$BASENAME"
 
 # Check adb connection
 if ! adb get-state 1>/dev/null 2>&1; then
@@ -34,11 +22,40 @@ if ! adb get-state 1>/dev/null 2>&1; then
   exit 1
 fi
 
-echo "Pushing $IMAGE_PATH → $DEST"
-adb push "$IMAGE_PATH" "$DEST" || exit 1
+# Function to push a single file
+push_file() {
+  local file_path="$1"
+  local base_name
+  base_name=$(basename "$file_path")
+  local dest="/sdcard/Pictures/$base_name"
 
-echo "Broadcasting media scan..."
-adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file://$DEST"
+  echo "Sending: $file_path → $dest"
+  if adb push "$file_path" "$dest" >/dev/null; then
+    adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file://$dest" >/dev/null
+    echo "$base_name sent successfully"
+  else
+    echo "Failed to send $file_path"
+  fi
+}
 
-echo "Done! File [$BASENAME] was send successfully."
+# Handle file or directory
+if [[ -d "$INPUT_PATH" ]]; then
+  shopt -s nullglob
+  files=("$INPUT_PATH"/*)
 
+  if [[ ${#files[@]} -eq 0 ]]; then
+    echo "No files found in directory: $INPUT_PATH"
+    exit 1
+  fi
+
+  for file in "${files[@]}"; do
+    [[ -f "$file" ]] && push_file "$file"
+  done
+elif [[ -f "$INPUT_PATH" ]]; then
+  push_file "$INPUT_PATH"
+else
+  echo "$INPUT_PATH is not a regular file or directory."
+  exit 1
+fi
+
+echo "Done."
