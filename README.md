@@ -7,7 +7,6 @@
 - Push a single image or multiple images from a folder  
 - Automatically triggers Android media scan  
 - Works with both physical devices and emulators via `adb`  
-- Robust handling of spaces in filenames, empty directories, and common errors  
 
 ## Requirements
 
