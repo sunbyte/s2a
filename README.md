@@ -34,8 +34,6 @@ chmod +x setup.sh
 
 > After this, you can run `s2a` from anywhere.
 
----
-
 ## Usage
 
 ### Send a single image:
