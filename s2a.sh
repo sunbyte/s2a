@@ -30,7 +30,7 @@ DEST="/sdcard/Pictures/$BASENAME"
 
 # Check adb connection
 if ! adb get-state 1>/dev/null 2>&1; then
-  echo "No Android emulator or device detected."
+  echo "No Android device or emulator detected."
   exit 1
 fi
 
