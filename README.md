@@ -7,6 +7,7 @@
 - Push a single image or multiple images from a folder  
 - Automatically triggers Android media scan  
 - Works with both physical devices and emulators via `adb`  
+- Robust handling of spaces in filenames, empty directories, and common errors  
 
 ## Requirements
 
@@ -16,26 +17,23 @@
 
 ## Installation
 
+You can install `s2a` easily using the included setup script.
+
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/sunbyte/s2a.git
+git clone https://github.com/yourusername/s2a.git
 cd s2a
 ```
 
-2. Make the script executable:
+2. Run the setup script:
 
 ```bash
-chmod +x s2a.sh
+chmod +x setup.sh
+./setup.sh
 ```
 
-3. Move the script to a folder in your system **PATH** to use it globally:
-
-```bash
-sudo mv s2a.sh /usr/local/bin/s2a
-```
-
-> Now you can run it as `s2a` from anywhere.
+> After this, you can run `s2a` from anywhere.
 
 ---
 
