@@ -1,2 +1,2 @@
 # s2a
-Send images directly to an Android device or emulator
+Send images directly to Android device or emulator
