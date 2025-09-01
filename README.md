@@ -20,7 +20,7 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/s2a.git
+git clone https://github.com/sunbyte/s2a.git
 cd s2a
 ```
 
